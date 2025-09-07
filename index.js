@@ -1,13 +1,22 @@
 const express = require('express')
 const app = express()
 const cors = require('cors')
+const api = require('./routes/api')
+const mongoose = require('mongoose')
 require('dotenv').config()
-
+mongoose.connect(process.env.MONGO_KEY)
+app.use(express.urlencoded({extended:false}))
 app.use(cors())
 app.use(express.static('public'))
+app.use('/api',api)
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html')
 });
+// app.post('/api/users', (req, res) => {
+//   const username = req.body.username;
+//   console.log('post api',username);
+  
+// })
 
 
 
