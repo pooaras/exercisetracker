@@ -14,6 +14,8 @@ mongoose.connect(process.env.MONGO_KEY, {
 .catch((err) => {
   console.error('❌ MongoDB connection error:', err);
 });
+app.use(express.json()); // 🔥 This line is missing
+
 app.use(express.urlencoded({extended:false}))
 app.use(cors())
 app.use(express.static('public'))
