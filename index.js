@@ -4,7 +4,16 @@ const cors = require('cors')
 const api = require('./routes/api')
 const mongoose = require('mongoose')
 require('dotenv').config()
-mongoose.connect(process.env.MONGO_KEY)
+mongoose.connect(process.env.MONGO_KEY, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+})
+.then(() => {
+  console.log('✅ MongoDB connected successfully');
+})
+.catch((err) => {
+  console.error('❌ MongoDB connection error:', err);
+});
 app.use(express.urlencoded({extended:false}))
 app.use(cors())
 app.use(express.static('public'))
