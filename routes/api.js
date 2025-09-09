@@ -57,8 +57,8 @@ router.post("/users/:id/exercises/", async (req, res) => {
   }
 });
 router.get("/users/", async (req, res) => {
-  const users = await User.find({},"username _id")
-  res.send(users)
+  const users = await User.find({}, "username _id");
+  res.send(users);
 });
 router.get("/users/:_id/logs/", async (req, res) => {
   const { _id } = req.params;
@@ -72,21 +72,24 @@ router.get("/users/:_id/logs/", async (req, res) => {
     if (user) {
       const exercise = await Exercises.find({ userId: _id });
       console.log(exercise, "fewao");
-      const logs = exercise.filter(
-        (item) =>
-          new Date(item.date) > new Date(from) &&
-          new Date(item.date) < new Date(to)
-      ).slice(limit);
-      res.send({
-        username: exercise.username,
-        count: logs.length,
-        _id: _id,
-        log: logs.map((item) => ({
-          description: item.description,
-          duration: item.duration,
-          date: new Date(item.date).toDateString(),
-        })),
-      });
+      const logs =
+        (from && to)
+          ? exercise.filter(
+            (item) =>
+              new Date(item.date) > new Date(from) &&
+              new Date(item.date) < new Date(to)
+          )
+          : exercise;
+          res.send({
+              username: exercise.username,
+              count: logs.length,
+              _id: _id,
+              log: logs.slice(limit).map((item) => ({
+                description: item.description,
+                duration: item.duration,
+                date: new Date(item.date).toDateString(),
+              })),
+            });
     } else {
       res.send("User does not exist");
     }
