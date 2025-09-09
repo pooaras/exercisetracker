@@ -80,7 +80,7 @@ router.get("/users/:_id/logs/", async (req, res) => {
         log: logs.map((item) => ({
           description: item.description,
           duration: item.duration,
-          date: item.date,
+          date: new Date(item.date).toDateString(),
         })),
       });
     } else {
