@@ -67,11 +67,11 @@ router.get("/users/:_id/logs/", async (req, res) => {
 
   try {
     const user = await User.findById(_id);
-    console.log(user, "feoa", _id);
+    // console.log(user, "feoa", _id);
 
     if (user) {
       const exercise = await Exercises.find({ userId: _id });
-      console.log(exercise, "fewao");
+      // console.log(exercise, "fewao");
       const logs =
         (from && to)
           ? exercise.filter(
@@ -84,7 +84,7 @@ router.get("/users/:_id/logs/", async (req, res) => {
               username: exercise.username,
               count: logs.length,
               _id: _id,
-              log: logs.slice(limit).map((item) => ({
+              log: logs.slice(0, limit || logs.length).map((item) => ({
                 description: item.description,
                 duration: item.duration,
                 date: new Date(item.date).toDateString(),
