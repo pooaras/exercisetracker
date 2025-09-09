@@ -47,7 +47,7 @@ router.post("/users/:id/exercises/", async (req, res) => {
         description: exercise.description,
         duration: exercise.duration,
         date: new Date(exercise.date).toDateString(),
-        _id: exercise._id,
+        _id: user._id,
       });
     } else {
       res.send("User does not exist");
@@ -55,6 +55,10 @@ router.post("/users/:id/exercises/", async (req, res) => {
   } catch (e) {
     res.send(e);
   }
+});
+router.get("/users/", async (req, res) => {
+  const users = await User.find({},"username _id")
+  res.send(users)
 });
 router.get("/users/:_id/logs/", async (req, res) => {
   const { _id } = req.params;
@@ -72,7 +76,7 @@ router.get("/users/:_id/logs/", async (req, res) => {
         (item) =>
           new Date(item.date) > new Date(from) &&
           new Date(item.date) < new Date(to)
-      );
+      ).slice(limit);
       res.send({
         username: exercise.username,
         count: logs.length,
